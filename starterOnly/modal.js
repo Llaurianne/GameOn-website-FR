@@ -20,6 +20,7 @@ const locations = document.getElementsByName("location")
 const checkbox1 = document.getElementById("checkbox1")
 const formData = document.querySelectorAll(".formData");
 const form= document.getElementsByName("reserve")
+const inputs = document.getElementsByTagName("input")
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -37,55 +38,105 @@ function closeModal() {
     modalbg.style.display = "none";
 }
 
+// hide error messages
+function hideMessages () {
+    formData.forEach(div => {
+        div.removeAttribute('data-error-visible')
+    })
+}
+
+
 // form validation
 function validate() {
-    if (
-            isValidated(first)
-            && isValidated(last)
-            && isValidated(email)
-            && isValidated(birthDate) && (Date.parse(birthDate.value) < Date.now())
-            // Date.parse also check the validity of the date (no need of  regex)
-            && isValidated(quantity)
-            /* alternative quantity validation without regex :
-            (Number.isInteger(parseFloat(quantity.value))) && 0<=parseFloat(quantity.value) && parseFloat(quantity.value)<=99)
-            */
-            && isLocationValidated()
-            && checkbox1.checked
-    ) {
-    // open new modal @todo
-    }
-    return false
-}
-
-function isValidated (input) {
-  let regex
-  switch (input) {
-    case first :
-    case last :
-      // [list of accepted characters]{2 or more}
-      regex = /^[A-Za-zŠŒŽœžÀ-ÿ\- ']{2,}$/
-          break
-    case email :
-      // ([one character from the first list](one time or more[a point without obligation][one or more characters from the first list])@[one character from the first list](one time or more[a - without obligation][one or more characters from the first list]).[2 or 3 characters from this list]
-      regex = /^([\dA-Za-z!#$%&'*\/=?^_+\-`{|}~]([.]?[\dA-Za-z!#$%&'*\/=?^_+\-`{|}~]+)+)@[\dA-Za-z]([\-]?[\dA-Za-z]+)+.[A-Za-z]{2,3}$/
-          break
-      case birthDate :
-      // (0[one number between 1 and 9] OR [1 or 2][one number] OR 3[0 or 1]//0[one number between 1 and 9] OR 1[0, 1 or 2]//19 OR 20 [two numbers]
-      regex = /^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1])$/
-          break
-      case quantity :
-      // 0 OR ([one number between 1 and 9][one number without obligation])
-      regex = /^(0|([1-9]\d?))$/
-          break
-  }
-  return (regex.test(input.value))
-}
-
-// check if at least one location is checked
-function isLocationValidated () {
-    for (let loc of locations) {
-        if (loc.checked === true) {
-            return true
+    hideMessages()
+    let isFormValidated
+    for (let i = 0; i < 12; i++) {
+        if (!isValidated(inputs[i])) {
+            errorMsg(inputs[i]);
+            isFormValidated = false;
         }
     }
+    if (isFormValidated) {
+        //open next modal;
+    }
+    return false;
+}
+
+function isValidated(input) {
+    let regex
+    switch (input.id) {
+        case 'first' :
+        case 'last' :
+            regex = /^[A-Za-zŠŒŽœžÀ-ÿ\- ']{2,}$/;
+            return (regex.test(input.value));
+            break
+        case 'email' :
+            regex = /^([\dA-Za-z!#$%&'*\/=?^_+\-`{|}~]([.]?[\dA-Za-z!#$%&'*\/=?^_+\-`{|}~]+)+)@[\dA-Za-z]([\-]?[\dA-Za-z]+)+.[A-Za-z]*$/
+            return (regex.test(input.value))
+            break
+        case 'birthdate' :
+            return (Date.parse(birthDate.value) < Date.now())
+            /* alternative date validation with regex :
+            regex = /^(19|20)\d{2}-(0[1-9]|1[0-2])-(0[1-9]|[1-2]\d|3[0-1])$/
+            return (regex.test(input.value)) */
+            break
+        case 'quantity' :
+            regex = /^(0|([1-9]\d?))$/
+            return (regex.test(input.value))
+            /* alternative quantity validation without regex :
+            (Number.isInteger(parseFloat(quantity.value))) && 0<=parseFloat(quantity.value) && parseFloat(quantity.value)<=99) */
+            break
+        case 'location1' :
+        case 'location2' :
+        case 'location3' :
+        case 'location4' :
+        case 'location5' :
+        case 'location6' :
+            let isLocationChecked = false
+            // check if at least one location is checked
+            for (let loc of locations) {
+                if (loc.checked === true) {
+                    isLocationChecked = true
+                }
+            }
+            return isLocationChecked
+            break
+        case 'checkbox1' :
+            return checkbox1.checked;
+            break
+    }
+}
+
+function errorMsg(input) {
+    let errorMsg
+    switch (input.id) {
+        case 'first' :
+            errorMsg = "Prénom incorrect ou manquant. Veuillez entrer au moins 2 caractères.";
+            break
+        case 'last' :
+            errorMsg = "Nom incorrect ou manquant. Veuillez entrer au moins 2 caractères.";
+            break
+        case 'email' :
+            errorMsg = "Email incorrect ou manquant.";
+            break
+        case 'birthdate' :
+            errorMsg = "Date de naissance incorrecte ou manquante.";
+            break
+        case 'quantity' :
+            errorMsg = "Quantité incorrecte ou manquante.";
+            break
+        case 'location1' :
+        case 'location2' :
+        case 'location3' :
+        case 'location4' :
+        case 'location5' :
+        case 'location6' :
+            errorMsg = "Veuillez choisir une localisation.";
+            break
+        case 'checkbox1' :
+            errorMsg = "Veuillez accepter les conditions d\'utilisation.";
+            break
+    }
+    input.parentElement.setAttribute('data-error', errorMsg)
+    input.parentElement.setAttribute("data-error-visible", "true")
 }
