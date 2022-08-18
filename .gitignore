@@ -1,5 +1,6 @@
 # IDEs and editors
 .idea/
+.idea/*
 
 # System files
 .DS_Store
