@@ -73,6 +73,19 @@ img {
   .topnav a.icon {
     float: right;
     display: block;
+    color: red;
+  }
+  .topnav a:hover {
+    background-color: transparent;
+  }
+  .header-logo {
+    width: 200px;
+    text-align: center;
+    padding: 12px 12px;
+    margin: 5px;
+  }
+  .header-logo img {
+    width: 100%;
   }
 }
 
@@ -90,15 +103,14 @@ img {
   }
 }
 
-
-
  @media screen and (max-width: 540px) {
   .topnav a {display: none;}
-  .topnav a.icon {
-    float: right;
-    display: block;
-    margin-top: -15px;
-  }
+   .header-logo {
+     width: 135px;
+     text-align: center;
+     padding: 12px 12px;
+     margin: 5px;
+   }
 } 
 
 main {
@@ -111,8 +123,6 @@ main {
   margin: 1px 20px 15px;
   border-radius: 2rem;
   text-align: justify;
-
-
 }
 
 .modal-btn {
@@ -166,7 +176,7 @@ main {
   height: 100%;
   width: 100%;
   overflow: auto;
-  background-color: rgba(26, 39, 156, 0.4);
+  background-color: #ffffff;
 }
 
 .content {
@@ -215,7 +225,7 @@ input {
   display: block;
   margin-top: 7px;
   margin-bottom: 7px;
-  text-align: right;
+  text-align: left;
   line-height: 0.3;
   opacity: 0;
   transition: 0.3s;
@@ -404,8 +414,23 @@ input[data-error]::after {
   font-weight: normal;
   font-size: 16px;
 }
+
+@media screen and (max-width: 540px) {
+  .bground {
+    background-color: transparent;
+    top: 80px;
+  }
+  label, .text-label {
+    font-size: 12px;
+    padding-top: 6px;
+  }
+  .content {
+    min-height: 100%;
+    margin: 0 auto 80px auto;
+  }
+}
+
 .hero-section {
-  min-height: 93vh;
   border-radius: 10px;
   display: grid;
   grid-template-columns: repeat(12, 1fr);
@@ -462,6 +487,7 @@ input[data-error]::after {
   height: 100%;
   display: block;
   padding: 0;
+  object-fit: cover;
 }
 .copyrights {
   color: #fe142f;
@@ -473,6 +499,13 @@ input[data-error]::after {
 .hero-section > .btn-signup {
   display: none;
 }
+
+.message {
+  text-align: center;
+  margin: calc(40vh - 90px) 0;
+  font-size: 2rem;
+}
+
 footer {
   padding-left: 2vw;
   padding-right: 2vw;
@@ -486,7 +519,8 @@ footer {
   .hero-content {
     background: #fff;
     color: #000;
-    padding: 20px;
+    padding: 0px;
+    min-width: 0;
   }
   .hero-content::after {
     content: unset;
@@ -495,12 +529,13 @@ footer {
     display: none;
   }
   .hero-headline {
-    font-size: 4.5rem;
+    font-size: 2.3rem;
     white-space: normal;
   }
   .hero-text {
     width: unset;
-    font-size: 1.5rem;
+    font-size: 0.8rem;
+    margin-top: 16px;
   }
   .hero-img img {
     border-radius: 10px;
@@ -514,6 +549,16 @@ footer {
   .copyrights {
     margin-top: 50px;
     text-align: center;
+  }
+  .copyrights {
+    margin: 0;
+    font-size: 0.75rem;
+  }
+}
+
+@media screen and (max-width: 540px) {
+  .message {
+    margin: calc(40vh - 100px) 0;
   }
 }
 

@@ -154,6 +154,8 @@ function launchConfirmation() {
     // add some attributes
     closeBtn.setAttribute("type", "submit")
     closeBtn.setAttribute("value", "Fermer")
+    // add a class for style only
+    merci.className = "message"
     confirmationMsg.style.display = "block"
     closeModalEvent()
 }
